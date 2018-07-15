@@ -6,6 +6,7 @@ from alembic.config import Config as AlConfig
 from fm_database.settings import get_config
 from fm_database.models.system import SystemSetup
 from fm_database.models.user import User
+from fm_database.base import get_session, create_all_tables
 
 
 @click.group()
@@ -19,7 +20,6 @@ def create_tables():
     """
     click.echo("create database")
     from fm_database.models.device import Device
-    from fm_database.models.base import create_all_tables
     click.echo("creating all tables")
     create_all_tables()
 
@@ -36,8 +36,6 @@ def init():
     """Init database. Create a new user named admin 
     with password admin
     """
-    from fm_database.models.base import get_session
-
     click.echo("creating user")
     user = User(
         username='admin',

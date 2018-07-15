@@ -22,6 +22,9 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 from fm_database.base import get_base
 from fm_database.models.user import User, Role
+from fm_database.models.message import Message
+from fm_database.models.system import Hardware
+from fm_database.models.device import Device
 Base = get_base()
 target_metadata = Base.metadata
 
