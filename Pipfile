@@ -7,7 +7,7 @@ name = "pypi"
 pylint = "*"
 
 [packages]
-sqlalchemy = "*"
+SQLAlchemy = ">=1.3.0"
 passlib = "*"
 click = "*"
 "e1839a8" = {path = ".", editable = true}
