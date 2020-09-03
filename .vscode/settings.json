@@ -1,18 +1,5 @@
 {
-    "python.pythonPath": "/home/pi/.local/share/virtualenvs/fm_database-GCGjfeqB/bin/python",
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#c9861c",
-        "activityBar.foreground": "#15202b",
-        "activityBar.inactiveForeground": "#15202b99",
-        "activityBarBadge.background": "#10704b",
-        "activityBarBadge.foreground": "#e7e7e7",
-        "titleBar.activeBackground": "#9c6816",
-        "titleBar.inactiveBackground": "#9c681699",
-        "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveForeground": "#e7e7e799",
-        "statusBar.background": "#9c6816",
-        "statusBarItem.hoverBackground": "#c9861c",
-        "statusBar.foreground": "#e7e7e7"
-    },
-    "peacock.color": "#9c6816"
+    "peacock.color": "#9c6816",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
