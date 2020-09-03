@@ -9,9 +9,11 @@ pylint = "*"
 [packages]
 SQLAlchemy = "~=1.3.5"
 passlib = "~=1.7.1"
-click = "~=7.0.0"
+click = "~=7.1.2"
 "e1839a8" = {path = ".", editable = true}
-alembic = "~=1.0.11"
+alembic = "~=1.4.2"
+# for Postgresql
+psycopg2 = "~=2.8.3"
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
