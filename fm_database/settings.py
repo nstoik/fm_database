@@ -10,7 +10,7 @@ class Config(object):
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////workspaces/fm_frontend/fm_database.db'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://fm:farm_monitor@db/farm_monitor.db'
 
 class ProdConfig(Config):
     """Production configuration."""
