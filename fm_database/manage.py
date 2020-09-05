@@ -41,7 +41,8 @@ def init():
         username='admin',
         email='admin@mail.com',
         password='admin',
-        active=True
+        active=True,
+        is_admin=True
     )
     session = get_session()
     session.add(user)
