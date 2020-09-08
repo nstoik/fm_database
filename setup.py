@@ -10,7 +10,8 @@ setup(
     install_requires=[
         'click',
         'sqlalchemy',
-        'passlib'
+        'passlib',
+        'psycopg2'
     ],
     entry_points={
         'console_scripts': [
