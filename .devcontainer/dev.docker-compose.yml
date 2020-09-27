@@ -10,23 +10,17 @@ services:
     networks:
       - farm_monitor
     depends_on:
-      - "db"
+      - "fm_db"
     
     volumes:
       # this is for vs code file editing inside the container
       - .:/workspaces/fm_database:cached
       # this is for bash command history. https://code.visualstudio.com/docs/remote/containers-advanced#_persist-bash-history-between-runs
-      - fm_database_bashhistory:/commandhistory
+      - bashhistory:/commandhistory
 
     # Overrides default command so things don't shut down after the process ends.
     command: /bin/sh -c "while sleep 1000; do :; done"
 
   
 volumes:
-  dbdata:
-  fm_database_bashhistory:
-
-networks:
-  farm_monitor:
-    name: farm_monitor
-    external: true
+  bashhistory:
