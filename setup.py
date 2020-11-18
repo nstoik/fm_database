@@ -1,4 +1,6 @@
-from setuptools import setup, find_packages
+# -*- coding: utf-8 -*-
+"""fm_database setup module."""
+from setuptools import find_packages, setup
 
 __version__ = '0.1'
 
@@ -15,7 +17,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'fm_database = fm_database.manage:cli'
+            'fm_database = fm_database.cli.cli:entry_point'
         ]
     }
 )

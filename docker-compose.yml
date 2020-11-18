@@ -14,7 +14,7 @@ services:
   fm_db:
     image: postgres:11
     container_name: "fm_db"
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: farm_monitor
       POSTGRES_USER: fm

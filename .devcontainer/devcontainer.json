@@ -15,19 +15,23 @@
 	"workspaceFolder": "/workspaces/fm_database",
 	"shutdownAction": "stopCompose",
 
-	//  Uncomment the next line to run commands after the container is created.
-	"postCreateCommand": "git config --global core.autocrlf true",
 
 	// Uncomment the next line to use a non-root user. See https://aka.ms/vscode-remote/containers/non-root-user.
 	"runArgs": [ "-u", "fm" ],
 
 	"extensions": [
 		"ms-python.python",
+		"eamodio.gitlens",
 	],
 	"settings": {
-		//"python.pythonPath": "/usr/local/bin/python",
+		"python.linting.enabled": true,
 		"python.linting.pylintEnabled": true,
-		//"python.linting.pylintPath": "/usr/local/bin/pylint",
-		"python.linting.enabled": true
-	}
+		"python.linting.pylintArgs": [
+			"--load-plugins",
+		],
+		"python.linting.flake8Enabled": true,
+		"python.linting.mypyEnabled": true,
+		"python.formatting.provider": "black"
+		
+	},
 }

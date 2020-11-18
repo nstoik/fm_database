@@ -4,6 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+# Testing
+pytest = "~=6.1.2"
+pytest-cov = "*"
+
+# Lint and code style
+black = "==20.8b1"
+flake8 = "*"
+flake8-blind-except = "*"
+flake8-debugger = "*"
+flake8-docstrings = "*"
+flake8-isort = "*"
+isort = "*"
+mypy = "*"
+pep8-naming = "*"
 pylint = "*"
 
 [packages]
@@ -14,6 +28,3 @@ click = "~=7.1.2"
 alembic = "~=1.4.3"
 # for Postgresql
 psycopg2 = "~=2.8.6"
-
-[requires]
-python_version = "3.8"
