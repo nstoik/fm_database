@@ -1,11 +1,14 @@
-from sqlalchemy import Column, DateTime, Integer, Boolean, String, Text, ForeignKey, LargeBinary
-from sqlalchemy.sql import func
+# -*- coding: utf-8 -*-
+"""Models for the system representations."""
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String
 from sqlalchemy.orm import relationship
 
-from ..database import Model, SurrogatePK, reference_col
+from ..database import Model, SurrogatePK
 
 
 class SystemSetup(Model, SurrogatePK):
+    """Model if the system has been setup or not."""
+
     __tablename__ = 'system_setup'
 
     first_setup_complete = Column(Boolean, default=False)
@@ -14,10 +17,13 @@ class SystemSetup(Model, SurrogatePK):
     new_update_installed = Column(Boolean, default=False)
 
     def __init__(self):
+        """Create an instance."""
         return
 
 
 class Wifi(Model, SurrogatePK):
+    """Wifi details."""
+
     __tablename__ = 'system_wifi'
 
     wifi_name = Column(String(20), default="FarmMonitor")
@@ -29,10 +35,13 @@ class Wifi(Model, SurrogatePK):
                        nullable=True)
 
     def __init__(self):
+        """Create an instance."""
         return
 
 
 class Interface(Model):
+    """Model an network interface."""
+
     __tablename__ = 'system_interface'
 
     interface = Column(String(5), primary_key=True)
@@ -44,12 +53,15 @@ class Interface(Model):
     credentials = relationship("Wifi")
 
     def __init__(self, interface):
+        """Create an instance."""
 
         self.interface = interface
         return
 
 
 class Hardware(Model, SurrogatePK):
+    """Model the system hardware."""
+
     __tablename__ = 'system_hardware'
 
     device_name = Column(String(20))
@@ -57,15 +69,18 @@ class Hardware(Model, SurrogatePK):
     serial_number = Column(String(20))
 
     def __init__(self):
+        """Create an instance."""
         return
 
 
 class Software(Model, SurrogatePK):
+    """The software version."""
+
     __tablename__ = 'system_software'
 
     software_version = Column(String(20))
     software_version_last = Column(String(20))
 
     def __init__(self):
-
+        """Create an instance."""
         return

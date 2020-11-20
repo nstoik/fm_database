@@ -1,12 +1,16 @@
-""" message model for farm monitor """
+# -*- coding: utf-8 -*-
+"""Message model for farm monitor."""
 from datetime import datetime, timedelta
-from sqlalchemy import Column, DateTime, String, PickleType
+
+from sqlalchemy import Column, DateTime, PickleType, String
 from sqlalchemy.sql import func
 
+from ..database import Model, SurrogatePK
 
-from ..database import SurrogatePK, Model
 
 class Message(Model, SurrogatePK):
+    """A message sent between devices."""
+
     __tablename__ = 'message'
 
     source = Column(String(20))
@@ -20,14 +24,14 @@ class Message(Model, SurrogatePK):
     payload = Column(PickleType, default=None)
 
     def __init__(self, source, destination, classification):
-
+        """Create an instance."""
         self.source = source
         self.destination = destination
         self.classification = classification
         return
 
-    # set the valid_from and valid_to dates. Input must be a timedelta object
     def set_datetime(self, valid_from=False, valid_to=False):
+        """Set the valid_from and valid_to dates. Input must be a timedelta object."""
 
         if not valid_to:
             valid_to = timedelta(days=1)

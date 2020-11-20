@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+"""A user model."""
 import datetime as dt
 
-from sqlalchemy import Column, Integer, String, Boolean, Binary, DateTime
+from sqlalchemy import Boolean, Column, DateTime, String
 from sqlalchemy.orm import relationship
 
+from ..database import Model, SurrogatePK, reference_col
 from ..extensions import pwd_context
-from ..database import SurrogatePK, Model, reference_col
 
 
 class Role(SurrogatePK, Model):
@@ -61,17 +63,21 @@ class User(SurrogatePK, Model):
 
     @property
     def is_active(self):
+        """Return if the user is active."""
         return self.active
 
     @property
     def is_authenticated(self):
+        """Return if the user is authenticated."""
         return True
 
     @property
     def is_anonymous(self):
+        """Return if the user is anonymous."""
         return False
 
     def get_id(self):
+        """Return the user by id."""
         try:
             return self.id
         except AttributeError:

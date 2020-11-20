@@ -1,19 +1,21 @@
+# -*- coding: utf-8 -*-
+"""Click commands for the database management."""
 import click
-
 from alembic import command as al_command
 from alembic.config import Config as AlConfig
 
-from fm_database.settings import get_config
+from fm_database.base import create_all_tables, get_session
 from fm_database.models.system import SystemSetup
 from fm_database.models.user import User
-from fm_database.base import get_session, create_all_tables
+from fm_database.settings import get_config
 
 
 @click.command()
 def create_tables():
-    """create database tables"""
+    """Create database tables."""
+
     click.echo("create database")
-    from fm_database.models.device import Device
+    from fm_database.models.device import Device  # noqa: F401
 
     click.echo("creating all tables")
     create_all_tables()
@@ -28,9 +30,8 @@ def create_tables():
 
 @click.command()
 def init():
-    """Init database. Create a new user named admin
-    with password admin
-    """
+    """Init database. Create a new user named admin with password admin."""
+
     click.echo("creating user")
     user = User(
         username="admin",
@@ -56,9 +57,7 @@ def init():
     help="Message for revision",
 )
 def create_revision(message):
-    """
-    create a database migration using alembic
-    """
+    """Create a database migration using alembic."""
 
     config = get_config()
     alembic_cnf = AlConfig(config.PROJECT_ROOT + "/migrations/alembic.ini")
@@ -75,9 +74,7 @@ def create_revision(message):
     help="What revision to upgrade to",
 )
 def database_upgrade(revision):
-    """
-    upgrade database to given revision
-    """
+    """Upgrade database to given revision."""
 
     config = get_config()
     alembic_cnf = AlConfig(config.PROJECT_ROOT + "/migrations/alembic.ini")

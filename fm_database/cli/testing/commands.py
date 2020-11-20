@@ -5,9 +5,9 @@ import sys
 from glob import glob
 from subprocess import call
 
-from fm_database.settings import get_config
-
 import click
+
+from fm_database.settings import get_config
 
 config = get_config()
 HERE = config.APP_DIR
@@ -73,6 +73,8 @@ def lint(fix_imports, check):
         "requirements",
         "migrations",
         "__pycache__",
+        "fm_database.egg-info",
+        "build"
     ]
     root_files = glob("*.py")
     root_directories = [

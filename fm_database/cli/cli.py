@@ -1,10 +1,14 @@
+# -*- coding: utf-8 -*-
+"""Main command line interface entry point."""
 import click
-from .testing import commands as testing_commands
+
 from .database import commands as database_commands
+from .testing import commands as testing_commands
 
 
 @click.group()
 def entry_point():
+    """Entry point for CLI."""
     pass
 
 
