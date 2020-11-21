@@ -10,34 +10,34 @@ from ..database import Model, SurrogatePK, reference_col
 class TemperatureSensor(Model, SurrogatePK):
     """Model a temperature sensor."""
 
-    __tablename__ = 'temperature_sensor'
+    __tablename__ = "temperature_sensor"
 
     templow = Column(String(4))
     temphigh = Column(String(4))
     last_value = Column(String(7))
-    cable_id = reference_col('temperature_cable')
+    cable_id = reference_col("temperature_cable")
 
     def __init__(self, cable_id):
         """Create the instance."""
         self.cable_id = cable_id
-        self.last_value = 'unknown'
+        self.last_value = "unknown"
 
     def __repr__(self):
         """Represent the instance as a string."""
-        return f'<TemperatureSensor: {self.id}>'
+        return f"<TemperatureSensor: {self.id}>"
 
 
 class TemperatureCable(Model, SurrogatePK):
     """Model a temperature cable."""
 
-    __tablename__ = 'temperature_cable'
+    __tablename__ = "temperature_cable"
 
     sensor_count = Column(Integer, default=0)
     cable_type = Column(String(20), default="temperature")
     bin_cable_number = Column(Integer, default=0)
 
     sensors = relationship("TemperatureSensor")
-    grainbin_id = reference_col('grainbin')
+    grainbin_id = reference_col("grainbin")
 
     def __init__(self, grainbin_id):
         """Create the instance."""
@@ -46,20 +46,20 @@ class TemperatureCable(Model, SurrogatePK):
 
     def __repr__(self):
         """Represent the instance as a string."""
-        return f'<TemperatureCable: {self.id}>'
+        return f"<TemperatureCable: {self.id}>"
 
 
 class Grainbin(Model, SurrogatePK):
     """A grainbin."""
 
-    __tablename__ = 'grainbin'
+    __tablename__ = "grainbin"
     id = Column(String(20), primary_key=True)
 
     creation_time = Column(DateTime, default=func.now())
     last_updated = Column(DateTime, onupdate=func.now())
     name = Column(String(20), nullable=False, unique=False)
     type = Column(String(20), nullable=True, default="standard")
-    sensor_type = Column(String(20), nullable=True, default='temperature')
+    sensor_type = Column(String(20), nullable=True, default="temperature")
     location = Column(String(20))
     description = Column(String(50))
     total_updates = Column(Integer)
@@ -67,11 +67,18 @@ class Grainbin(Model, SurrogatePK):
     bus_number = Column(Integer, nullable=False)
     user_configured = Column(Boolean, default=False)
 
-    cables = relationship('TemperatureCable')
-    device_id = reference_col('device')
+    cables = relationship("TemperatureCable")
+    device_id = reference_col("device")
 
-    def __init__(self, id, device_id, bus_number,
-                 name='New', location='Not Set', description='Not Set'):
+    def __init__(
+        self,
+        id,
+        device_id,
+        bus_number,
+        name="New",
+        location="Not Set",
+        description="Not Set",
+    ):
         """Create an instance."""
         self.id = id
         self.name = name
@@ -83,13 +90,13 @@ class Grainbin(Model, SurrogatePK):
 
     def __repr__(self):
         """Represent the grainbin as a string."""
-        return f'<Grainbin: {self.id}>'
+        return f"<Grainbin: {self.id}>"
 
 
 class Device(Model, SurrogatePK):
     """ A device."""
 
-    __tablename__ = 'device'
+    __tablename__ = "device"
     id = Column(String(20), primary_key=True)
     hardware_version = Column(String(20))
     software_version = Column(String(20))
@@ -115,12 +122,17 @@ class Device(Model, SurrogatePK):
 
     # grainbin related data
     grainbin_count = Column(Integer, default=0)
-    bins = relationship('Grainbin')
+    bins = relationship("Grainbin")
 
-    def __init__(self, id, hardware_version, software_version,
-                 name='not set',
-                 location='not set',
-                 description='not set'):
+    def __init__(
+        self,
+        id,
+        hardware_version,
+        software_version,
+        name="not set",
+        location="not set",
+        description="not set",
+    ):
         """Create the instance."""
         self.id = id
         self.name = name
@@ -131,4 +143,4 @@ class Device(Model, SurrogatePK):
 
     def __repr__(self):
         """Represent the device as a string."""
-        return '<Device: {self.name}>'
+        return "<Device: {self.name}>"

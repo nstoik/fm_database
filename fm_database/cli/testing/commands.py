@@ -74,7 +74,7 @@ def lint(fix_imports, check):
         "migrations",
         "__pycache__",
         "fm_database.egg-info",
-        "build"
+        "build",
     ]
     root_files = glob("*.py")
     root_directories = [
@@ -83,7 +83,6 @@ def lint(fix_imports, check):
     files_and_directories = [
         arg for arg in root_files + root_directories if arg not in skip
     ]
-    print(files_and_directories)
 
     def execute_tool(description, *args):
         """Execute a checking tool with its arguments."""

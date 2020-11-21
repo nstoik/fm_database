@@ -11,7 +11,7 @@ from ..database import Model, SurrogatePK
 class Message(Model, SurrogatePK):
     """A message sent between devices."""
 
-    __tablename__ = 'message'
+    __tablename__ = "message"
 
     source = Column(String(20))
     destination = Column(String(20))

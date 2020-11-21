@@ -9,7 +9,7 @@ from ..database import Model, SurrogatePK
 class SystemSetup(Model, SurrogatePK):
     """Model if the system has been setup or not."""
 
-    __tablename__ = 'system_setup'
+    __tablename__ = "system_setup"
 
     first_setup_complete = Column(Boolean, default=False)
     first_setup_time = Column(DateTime)
@@ -24,15 +24,17 @@ class SystemSetup(Model, SurrogatePK):
 class Wifi(Model, SurrogatePK):
     """Wifi details."""
 
-    __tablename__ = 'system_wifi'
+    __tablename__ = "system_wifi"
 
     wifi_name = Column(String(20), default="FarmMonitor")
     wifi_password = Column(String(20), default="raspberry")
     wifi_mode = Column(String(20), default="wpa")
 
-    interface = Column(String(5),
-                       ForeignKey('system_interface.interface', ondelete='CASCADE'),
-                       nullable=True)
+    interface = Column(
+        String(5),
+        ForeignKey("system_interface.interface", ondelete="CASCADE"),
+        nullable=True,
+    )
 
     def __init__(self):
         """Create an instance."""
@@ -42,7 +44,7 @@ class Wifi(Model, SurrogatePK):
 class Interface(Model):
     """Model an network interface."""
 
-    __tablename__ = 'system_interface'
+    __tablename__ = "system_interface"
 
     interface = Column(String(5), primary_key=True)
     is_active = Column(Boolean, default=True)
@@ -62,7 +64,7 @@ class Interface(Model):
 class Hardware(Model, SurrogatePK):
     """Model the system hardware."""
 
-    __tablename__ = 'system_hardware'
+    __tablename__ = "system_hardware"
 
     device_name = Column(String(20))
     hardware_version = Column(String(20))
@@ -76,7 +78,7 @@ class Hardware(Model, SurrogatePK):
 class Software(Model, SurrogatePK):
     """The software version."""
 
-    __tablename__ = 'system_software'
+    __tablename__ = "system_software"
 
     software_version = Column(String(20))
     software_version_last = Column(String(20))
