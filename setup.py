@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """fm_database setup module."""
-from setuptools import find_packages, setup
+from setuptools import find_packages, setup  # type: ignore [import]
 
 __version__ = "0.1"
 

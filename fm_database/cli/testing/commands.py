@@ -9,7 +9,7 @@ import click
 
 from fm_database.settings import get_config
 
-config = get_config()
+config = get_config()  # pylint: disable=invalid-name
 HERE = config.APP_DIR
 PROJECT_ROOT = config.PROJECT_ROOT
 TEST_PATH = os.path.join(PROJECT_ROOT, "tests")
@@ -95,7 +95,7 @@ def lint(fix_imports, check):
     isort_args = []
     black_args = ["--diff"]
     mypy_args = ["--warn-unused-ignores", "--show-error-codes"]
-    pylint_args = ["--load-plugins", "pylint_flask_sqlalchemy,pylint_flask"]
+    pylint_args = ["--load-plugins", ""]
     if check:
         isort_args.append("--check")
         black_args.append("--check")

@@ -3,7 +3,7 @@
 import os
 
 
-class Config(object):
+class Config:  # pylint: disable=too-few-public-methods
     """Base configuration."""
 
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
@@ -13,21 +13,21 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = "postgresql://fm:farm_monitor@fm_db/farm_monitor.db"
 
 
-class ProdConfig(Config):
+class ProdConfig(Config):  # pylint: disable=too-few-public-methods
     """Production configuration."""
 
     ENV = "prod"
     DEBUG = False
 
 
-class DevConfig(Config):
+class DevConfig(Config):  # pylint: disable=too-few-public-methods
     """Development configuration."""
 
     ENV = "dev"
     DEBUG = True
 
 
-class TestConfig(Config):
+class TestConfig(Config):  # pylint: disable=too-few-public-methods
     """Test configuration."""
 
     TESTING = True
@@ -36,14 +36,14 @@ class TestConfig(Config):
 
 
 def get_config():
+    """Return the Config option based on environment variables."""
 
     environment = os.environ.get("FD_DEVICE_CONFIG", default="dev")
 
     if environment == "dev":
         return DevConfig
-    elif environment == "prod":
+    if environment == "prod":
         return ProdConfig
-    elif environment == "test":
+    if environment == "test":
         return TestConfig
-    else:
-        return DevConfig
+    return DevConfig

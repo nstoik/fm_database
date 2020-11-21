@@ -42,5 +42,3 @@ def create_all_tables():
     """Create all tables."""
     engine = get_engine()
     Base.metadata.create_all(bind=engine)
-
-    return

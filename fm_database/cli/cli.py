@@ -9,7 +9,6 @@ from .testing import commands as testing_commands
 @click.group()
 def entry_point():
     """Entry point for CLI."""
-    pass
 
 
 entry_point.add_command(testing_commands.test)

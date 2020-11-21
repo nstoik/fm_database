@@ -5,10 +5,10 @@ from datetime import datetime, timedelta
 from sqlalchemy import Column, DateTime, PickleType, String
 from sqlalchemy.sql import func
 
-from ..database import Model, SurrogatePK
+from ..database import SurrogatePK
 
 
-class Message(Model, SurrogatePK):
+class Message(SurrogatePK):
     """A message sent between devices."""
 
     __tablename__ = "message"
@@ -28,7 +28,6 @@ class Message(Model, SurrogatePK):
         self.source = source
         self.destination = destination
         self.classification = classification
-        return
 
     def set_datetime(self, valid_from=False, valid_to=False):
         """Set the valid_from and valid_to dates. Input must be a timedelta object."""
@@ -41,5 +40,3 @@ class Message(Model, SurrogatePK):
 
         self.valid_from = datetime.now() + valid_from
         self.valid_to = datetime.now() + valid_to
-
-        return

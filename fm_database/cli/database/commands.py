@@ -10,6 +10,7 @@ from fm_database.models.user import User
 from fm_database.settings import get_config
 
 
+# pylint: disable=unused-import,import-outside-toplevel
 @click.command()
 def create_tables():
     """Create database tables."""

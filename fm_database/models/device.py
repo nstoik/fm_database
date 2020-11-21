@@ -4,10 +4,10 @@ from sqlalchemy import Boolean, Column, DateTime, Integer, Interval, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from ..database import Model, SurrogatePK, reference_col
+from ..database import SurrogatePK, reference_col
 
 
-class TemperatureSensor(Model, SurrogatePK):
+class TemperatureSensor(SurrogatePK):
     """Model a temperature sensor."""
 
     __tablename__ = "temperature_sensor"
@@ -27,7 +27,7 @@ class TemperatureSensor(Model, SurrogatePK):
         return f"<TemperatureSensor: {self.id}>"
 
 
-class TemperatureCable(Model, SurrogatePK):
+class TemperatureCable(SurrogatePK):
     """Model a temperature cable."""
 
     __tablename__ = "temperature_cable"
@@ -42,18 +42,16 @@ class TemperatureCable(Model, SurrogatePK):
     def __init__(self, grainbin_id):
         """Create the instance."""
         self.grainbin_id = grainbin_id
-        return
 
     def __repr__(self):
         """Represent the instance as a string."""
         return f"<TemperatureCable: {self.id}>"
 
 
-class Grainbin(Model, SurrogatePK):
+class Grainbin(SurrogatePK):
     """A grainbin."""
 
     __tablename__ = "grainbin"
-    id = Column(String(20), primary_key=True)
 
     creation_time = Column(DateTime, default=func.now())
     last_updated = Column(DateTime, onupdate=func.now())
@@ -72,7 +70,6 @@ class Grainbin(Model, SurrogatePK):
 
     def __init__(
         self,
-        id,
         device_id,
         bus_number,
         name="New",
@@ -80,7 +77,6 @@ class Grainbin(Model, SurrogatePK):
         description="Not Set",
     ):
         """Create an instance."""
-        self.id = id
         self.name = name
         self.device_id = device_id
         self.bus_number = bus_number
@@ -93,11 +89,11 @@ class Grainbin(Model, SurrogatePK):
         return f"<Grainbin: {self.id}>"
 
 
-class Device(Model, SurrogatePK):
-    """ A device."""
+class Device(SurrogatePK):
+    """A device."""
 
     __tablename__ = "device"
-    id = Column(String(20), primary_key=True)
+    device_id = Column(String(20), primary_key=True)
     hardware_version = Column(String(20))
     software_version = Column(String(20))
 
@@ -126,7 +122,7 @@ class Device(Model, SurrogatePK):
 
     def __init__(
         self,
-        id,
+        device_id,
         hardware_version,
         software_version,
         name="not set",
@@ -134,7 +130,7 @@ class Device(Model, SurrogatePK):
         description="not set",
     ):
         """Create the instance."""
-        self.id = id
+        self.device_id = device_id
         self.name = name
         self.hardware_version = hardware_version
         self.software_version = software_version

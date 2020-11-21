@@ -64,6 +64,7 @@ disable=no-member,
         unsupported-membership-test,
         arguments-differ,
         line-too-long,
+        too-many-arguments,
         # Defaults below, manual added above
         print-statement,
         parameter-unpacking,
@@ -299,7 +300,8 @@ good-names=i,
            Run,
            _,
            rv,
-           db
+           db,
+           id
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted

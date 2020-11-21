@@ -5,11 +5,11 @@ import datetime as dt
 from sqlalchemy import Boolean, Column, DateTime, String
 from sqlalchemy.orm import relationship
 
-from ..database import Model, SurrogatePK, reference_col
+from ..database import SurrogatePK, reference_col
 from ..extensions import pwd_context
 
 
-class Role(SurrogatePK, Model):
+class Role(SurrogatePK):
     """A role for a user."""
 
     __tablename__ = "roles"
@@ -19,14 +19,14 @@ class Role(SurrogatePK, Model):
 
     def __init__(self, name, **kwargs):
         """Create instance."""
-        Model.__init__(self, name=name, **kwargs)
+        super().__init__(self, name=name, **kwargs)
 
     def __repr__(self):
         """Represent instance as a unique string."""
         return "<Role({name})>".format(name=self.name)
 
 
-class User(SurrogatePK, Model):
+class User(SurrogatePK):
     """A user of the app."""
 
     __tablename__ = "users"
@@ -42,7 +42,7 @@ class User(SurrogatePK, Model):
 
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
-        Model.__init__(self, username=username, email=email, **kwargs)
+        super().__init__(self, username=username, email=email, **kwargs)
         if password:
             self.set_password(password)
         else:
@@ -75,13 +75,6 @@ class User(SurrogatePK, Model):
     def is_anonymous(self):
         """Return if the user is anonymous."""
         return False
-
-    def get_id(self):
-        """Return the user by id."""
-        try:
-            return self.id
-        except AttributeError:
-            raise NotImplementedError("No `id` attribute - override `get_id`")
 
     def __repr__(self):
         """Represent instance as a unique string."""
