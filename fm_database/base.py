@@ -22,7 +22,7 @@ def get_session():
     session = sessionmaker(bind=engine)
     db_session = scoped_session(session)
 
-    return db_session()
+    return db_session
 
 
 def get_base(with_query=False):

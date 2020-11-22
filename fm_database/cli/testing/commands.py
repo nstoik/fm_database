@@ -92,7 +92,7 @@ def lint(fix_imports, check):
         if rv != 0:
             sys.exit(rv)
 
-    isort_args = []
+    isort_args = ["--profile", "black"]
     black_args = ["--diff"]
     mypy_args = ["--warn-unused-ignores", "--show-error-codes"]
     pylint_args = ["--load-plugins", ""]

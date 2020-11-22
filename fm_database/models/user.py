@@ -2,11 +2,18 @@
 """A user model."""
 import datetime as dt
 
-from sqlalchemy import Boolean, Column, DateTime, String
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
 
-from ..database import SurrogatePK, reference_col
+from ..database import SurrogatePK
 from ..extensions import pwd_context
+
+user_roles = Table(
+    "user_roles",
+    SurrogatePK.metadata,
+    Column("role_id", Integer, ForeignKey("roles.id")),
+    Column("user_id", Integer, ForeignKey("users.id")),
+)
 
 
 class Role(SurrogatePK):
@@ -14,12 +21,11 @@ class Role(SurrogatePK):
 
     __tablename__ = "roles"
     name = Column(String(80), unique=True, nullable=False)
-    user_id = reference_col("users", nullable=True)
-    user = relationship("User", backref="roles")
+    users = relationship("User", secondary=user_roles, backref="roles")
 
     def __init__(self, name, **kwargs):
         """Create instance."""
-        super().__init__(self, name=name, **kwargs)
+        super().__init__(name=name, **kwargs)
 
     def __repr__(self):
         """Represent instance as a unique string."""
@@ -42,7 +48,7 @@ class User(SurrogatePK):
 
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
-        super().__init__(self, username=username, email=email, **kwargs)
+        super().__init__(username=username, email=email, **kwargs)
         if password:
             self.set_password(password)
         else:
