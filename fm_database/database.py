@@ -11,7 +11,7 @@ class CRUDMixin:
     @classmethod
     def create(cls, session, **kwargs):
         """Create a new record and save it the database."""
-        instance = cls(**kwargs)  # type: ignore [call-arg]
+        instance = cls(**kwargs)
         return instance.save(session)
 
     def update(self, session, commit=True, **kwargs):
