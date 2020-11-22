@@ -99,7 +99,7 @@ def lint(fix_imports, check):
     if check:
         isort_args.append("--check")
         black_args.append("--check")
-        mypy_args.append("--check")
+        # mypy_args.append("--check")
     if fix_imports:
         execute_tool("Fixing import order", "isort", *isort_args)
     execute_tool("Formatting style", "black", *black_args)
