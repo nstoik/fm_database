@@ -5,6 +5,3 @@ build/
 
 # mypy cache files
 .mypy_cache/
-
-# Unit test / coverage reports
-.coverage
