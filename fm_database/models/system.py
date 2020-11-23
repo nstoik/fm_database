@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Models for the system representations."""
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String
+from sqlalchemy import Boolean, Column, DateTime, String
 from sqlalchemy.orm import relationship
 
-from ..database import SurrogatePK
+from ..database import SurrogatePK, reference_col
 
 
 class SystemSetup(SurrogatePK):
@@ -26,15 +26,12 @@ class Wifi(SurrogatePK):
 
     __tablename__ = "system_wifi"
 
-    wifi_name = Column(String(20), default="FarmMonitor")
-    wifi_password = Column(String(20), default="raspberry")
-    wifi_mode = Column(String(20), default="wpa")
+    name = Column(String(20), default="FarmMonitor")
+    password = Column(String(20), default="raspberry")
+    mode = Column(String(20), default="wpa")
 
-    interface = Column(
-        String(5),
-        ForeignKey("system_interface.interface", ondelete="CASCADE"),
-        nullable=True,
-    )
+    interface_id = reference_col("system_interface", nullable=True)
+    interface = relationship("Interface", backref="credentials")
 
     def __init__(self):
         """Create an instance."""
@@ -46,18 +43,15 @@ class Interface(SurrogatePK):
 
     __tablename__ = "system_interface"
 
-    interface = Column(String(5), primary_key=True)
+    interface = Column(String(5), nullable=False)
     is_active = Column(Boolean, default=True)
     is_for_fm = Column(Boolean, default=False)
     is_external = Column(Boolean, default=False)
     state = Column(String(20))
 
-    credentials = relationship("Wifi")
-
-    def __init__(self, interface):
+    def __init__(self, interface, **kwargs):
         """Create an instance."""
-
-        self.interface = interface
+        super().__init__(interface=interface, **kwargs)
 
 
 class Hardware(SurrogatePK):
