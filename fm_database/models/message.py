@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Message model for farm monitor."""
-from datetime import datetime, timedelta
+import datetime as dt
 
 from sqlalchemy import Column, DateTime, PickleType, String
 from sqlalchemy.sql import func
@@ -29,14 +29,16 @@ class Message(SurrogatePK):
         self.destination = destination
         self.classification = classification
 
-    def set_datetime(self, valid_from=False, valid_to=False):
+    def set_datetime(
+        self, valid_from: dt.timedelta = None, valid_to: dt.timedelta = None
+    ):
         """Set the valid_from and valid_to dates. Input must be a timedelta object."""
 
-        if not valid_to:
-            valid_to = timedelta(days=1)
+        if valid_to is None:
+            valid_to = dt.timedelta(days=1)
 
-        if not valid_from:
-            valid_from = timedelta(seconds=0)
+        if valid_from is None:
+            valid_from = dt.timedelta(seconds=0)
 
-        self.valid_from = datetime.now() + valid_from
-        self.valid_to = datetime.now() + valid_to
+        self.valid_from = dt.datetime.now() + valid_from
+        self.valid_to = dt.datetime.now() + valid_to
