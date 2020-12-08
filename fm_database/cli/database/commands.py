@@ -4,19 +4,62 @@ import click
 from alembic import command as al_command
 from alembic.config import Config as AlConfig
 
-from fm_database.base import create_all_tables, get_session
+from fm_database.base import create_all_tables, drop_all_tables, get_base, get_session
+
+# import all models so they are available to the SqlAlchemy base
+from fm_database.models.device import (  # noqa: F401  pylint: disable=unused-import
+    Device,
+)
+from fm_database.models.message import (  # noqa: F401  pylint: disable=unused-import
+    Message,
+)
 from fm_database.models.system import SystemSetup
 from fm_database.models.user import User
 from fm_database.settings import get_config
 
 
-# pylint: disable=unused-import,import-outside-toplevel
-@click.command()
+@click.group()
+def create():
+    """Command group for database create commands."""
+
+
+@create.command()
+@click.option(
+    "--confirm",
+    default=False,
+    is_flag=True,
+    help="Confirm this action. This will delete all previous database data.",
+)
+def delete_all_data(confirm):
+    """Delete all data from the database."""
+
+    if not confirm:
+        click.echo("Action was not confirmed. No change made.")
+    else:
+        click.echo("deleting all data from the database.")
+
+        base = get_base()
+        session = get_session()
+        for table in reversed(base.meta.sorted_tables):
+            session.execute(table.delete())
+        session.commit()
+
+        click.echo("done")
+
+
+@create.command()
+@click.pass_context
+def recreate_database(ctx):
+    """Drop and recreate database tables."""
+
+    click.echo("dropping all tables")
+    drop_all_tables()
+    ctx.forward(create_tables)
+
+
+@create.command()
 def create_tables():
     """Create database tables."""
-
-    click.echo("create database")
-    from fm_database.models.device import Device  # noqa: F401
 
     click.echo("creating all tables")
     create_all_tables()
@@ -29,9 +72,9 @@ def create_tables():
     click.echo("done")
 
 
-@click.command()
-def init():
-    """Init database. Create a new user named admin with password admin."""
+@create.command()
+def initilize_database():
+    """Initilize database for first time. Create a new user named admin with password admin."""
 
     click.echo("creating user")
     user = User(
@@ -49,36 +92,3 @@ def init():
     system_setup = SystemSetup()
     session.add(system_setup)
     session.commit()
-
-
-@click.command()
-@click.option(
-    "--message",
-    prompt="Provide a message for the revision",
-    help="Message for revision",
-)
-def create_revision(message):
-    """Create a database migration using alembic."""
-
-    config = get_config()
-    alembic_cnf = AlConfig(config.PROJECT_ROOT + "/migrations/alembic.ini")
-    alembic_cnf.set_main_option("script_location", config.PROJECT_ROOT + "/migrations")
-
-    al_command.revision(alembic_cnf, message=message, autogenerate=True)
-
-
-@click.command()
-@click.option(
-    "--revision",
-    default="head",
-    prompt="What revision to upgrade to?",
-    help="What revision to upgrade to",
-)
-def database_upgrade(revision):
-    """Upgrade database to given revision."""
-
-    config = get_config()
-    alembic_cnf = AlConfig(config.PROJECT_ROOT + "/migrations/alembic.ini")
-    alembic_cnf.set_main_option("script_location", config.PROJECT_ROOT + "/migrations")
-
-    al_command.upgrade(alembic_cnf, revision)

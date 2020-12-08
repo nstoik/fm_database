@@ -42,3 +42,9 @@ def create_all_tables():
     """Create all tables."""
     engine = get_engine()
     Base.metadata.create_all(bind=engine)
+
+
+def drop_all_tables():
+    """Drop all tables."""
+    engine = get_engine()
+    Base.metadata.drop_all(bind=engine)

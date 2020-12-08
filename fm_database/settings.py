@@ -38,7 +38,7 @@ class TestConfig(Config):  # pylint: disable=too-few-public-methods
 def get_config(override_default="dev"):
     """Return the Config option based on environment variables."""
 
-    environment = os.environ.get("FD_DEVICE_CONFIG", default=override_default)
+    environment = os.environ.get("FM_DATABASE_CONFIG", default=override_default)
 
     if environment == "dev":
         return DevConfig

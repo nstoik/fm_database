@@ -3,6 +3,7 @@
 import click
 
 from .database import commands as database_commands
+from .database import update_commands
 from .testing import commands as testing_commands
 
 
@@ -14,7 +15,6 @@ def entry_point():
 entry_point.add_command(testing_commands.test)
 entry_point.add_command(testing_commands.lint)
 
-entry_point.add_command(database_commands.create_tables)
-entry_point.add_command(database_commands.create_revision)
-entry_point.add_command(database_commands.database_upgrade)
-entry_point.add_command(database_commands.init)
+entry_point.add_command(update_commands.update)
+
+entry_point.add_command(database_commands.create)
