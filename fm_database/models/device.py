@@ -54,9 +54,9 @@ class Grainbin(SurrogatePK):
     __tablename__ = "grainbin"
 
     creation_time = Column(DateTime, default=func.now())
-    last_updated = Column(DateTime, onupdate=func.now())
+    last_updated = Column(DateTime, default=func.now(), onupdate=func.now())
     name = Column(String(20), nullable=False, unique=False)
-    type = Column(String(20), nullable=True, default="standard")
+    grainbin_type = Column(String(20), nullable=True, default="standard")
     sensor_type = Column(String(20), nullable=True, default="temperature")
     location = Column(String(20))
     description = Column(String(50))
@@ -93,7 +93,7 @@ class Device(SurrogatePK):
     """A device."""
 
     __tablename__ = "device"
-    device_id = Column(String(20), primary_key=True)
+    device_id = Column(String(20), unique=True)
     hardware_version = Column(String(20))
     software_version = Column(String(20))
 
@@ -139,4 +139,4 @@ class Device(SurrogatePK):
 
     def __repr__(self):
         """Represent the device as a string."""
-        return "<Device: {self.name}>"
+        return f"<Device: {self.name}>"
