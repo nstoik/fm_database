@@ -11,6 +11,7 @@ services:
       - farm_monitor
     depends_on:
       - "fm_db"
+    restart: unless-stopped
   fm_db:
     image: postgres:11
     container_name: "fm_db"
