@@ -73,8 +73,8 @@ def create_tables():
 
 
 @create.command()
-def initilize_database():
-    """Initilize database for first time. Create a new user named admin with password admin."""
+def initialize_database():
+    """initialize database for first time. Create a new user named admin with password admin."""
 
     click.echo("creating user")
     user = User(
