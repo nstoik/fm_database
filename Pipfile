@@ -17,9 +17,12 @@ flake8-debugger = "*"
 flake8-docstrings = "*"
 flake8-isort = "*"
 isort = "*"
-mypy = "*"
 pep8-naming = "*"
 pylint = "*"
+
+# MyPy and stubs
+mypy = "*"
+sqlalchemy-stubs = "*"
 
 [packages]
 SQLAlchemy = "~=1.3.22"

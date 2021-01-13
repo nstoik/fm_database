@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Defines fixtures available to all tests."""
 # pylint: disable=redefined-outer-name,invalid-name
-from _pytest.monkeypatch import MonkeyPatch
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -16,6 +16,7 @@ db_session = scoped_session(session)
 
 
 @pytest.fixture(scope="session")
+# pylint: disable=unused-argument
 def monkeysession(request):
     """Create a MonkeyPatch object that can be scoped to a session.
 
@@ -24,6 +25,7 @@ def monkeysession(request):
     mpatch = MonkeyPatch()
     yield mpatch
     mpatch.undo()
+
 
 @pytest.fixture(scope="session", autouse=True)
 def set_testing_env(monkeysession):
@@ -48,7 +50,7 @@ def dbsession():
 @pytest.fixture
 def tables(dbsession):
     """Create all tables for testing. Delete when done."""
-    base = get_base(with_query=True)
+    base = get_base()
     base.query = dbsession.query_property()
     base.metadata.create_all(bind=engine)
     yield

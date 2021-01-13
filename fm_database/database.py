@@ -4,8 +4,8 @@ from sqlalchemy import Column, ForeignKey, Integer
 
 from fm_database.base import get_base
 
-
 Base = get_base(with_query=True)
+
 
 class CRUDMixin:
     """Mixin that adds convenience methods for CRUD (create, read, update, delete) operations."""
@@ -35,7 +35,7 @@ class CRUDMixin:
         return commit and session.commit()
 
 
-class Model(CRUDMixin, Base):
+class Model(CRUDMixin, Base):  # type: ignore[valid-type, misc]
     """Base model class that includes CRUD convenience methods."""
 
     __abstract__ = True
