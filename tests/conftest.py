@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Defines fixtures available to all tests."""
 # pylint: disable=redefined-outer-name,invalid-name
+from _pytest.monkeypatch import MonkeyPatch
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -12,6 +13,29 @@ config = get_config(override_default="test")
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 session = sessionmaker(bind=engine)
 db_session = scoped_session(session)
+
+
+@pytest.fixture(scope="session")
+def monkeysession(request):
+    """Create a MonkeyPatch object that can be scoped to a session.
+
+    https://github.com/pytest-dev/pytest/issues/363#issuecomment-289830794
+    """
+    mpatch = MonkeyPatch()
+    yield mpatch
+    mpatch.undo()
+
+@pytest.fixture(scope="session", autouse=True)
+def set_testing_env(monkeysession):
+    """Set the environment variable for testing.
+
+    This executes once for the entire session of testing.
+    The environment variables are set back to the default after.
+    Makes sure that the database env is also called and set.
+    """
+    monkeysession.setenv("FM_DATABASE_CONFIG", "test")
+    yield
+    monkeysession.setenv("FM_DATABASE_CONFIG", "dev")
 
 
 @pytest.fixture

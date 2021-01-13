@@ -161,7 +161,7 @@ class TestGrainbin:
         """Test retrieving a grainbin by its ID."""
         device = DeviceFactory()
         device.save(dbsession)
-        grainbin = Grainbin(device_id=device.device_id, bus_number=1)
+        grainbin = Grainbin(device_id=device.id, bus_number=1)
         grainbin.save(dbsession)
 
         retrieved = Grainbin.get_by_id(grainbin.id)

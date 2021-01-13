@@ -2,8 +2,10 @@
 """Database module, including the SQLAlchemy database object and DB-related utilities."""
 from sqlalchemy import Column, ForeignKey, Integer
 
-from fm_database.base import Base
+from fm_database.base import get_base
 
+
+Base = get_base(with_query=True)
 
 class CRUDMixin:
     """Mixin that adds convenience methods for CRUD (create, read, update, delete) operations."""

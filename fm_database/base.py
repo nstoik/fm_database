@@ -41,10 +41,12 @@ def get_base(with_query=False):
 def create_all_tables():
     """Create all tables."""
     engine = get_engine()
-    Base.metadata.create_all(bind=engine)
+    base = get_base(with_query=True)
+    base.metadata.create_all(bind=engine)
 
 
 def drop_all_tables():
     """Drop all tables."""
     engine = get_engine()
-    Base.metadata.drop_all(bind=engine)
+    base = get_base()
+    base.metadata.drop_all(bind=engine)
