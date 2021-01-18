@@ -7,14 +7,11 @@ from alembic.config import Config as AlConfig
 from fm_database.base import create_all_tables, drop_all_tables, get_base, get_session
 
 # import all models so they are available to the SqlAlchemy base
-from fm_database.models.device import (  # noqa: F401  pylint: disable=unused-import
-    Device,
-)
-from fm_database.models.message import (  # noqa: F401  pylint: disable=unused-import
-    Message,
-)
-from fm_database.models.system import SystemSetup
-from fm_database.models.user import User
+# pylint: disable=unused-import
+from fm_database.models.device import Device  # noqa: F401
+from fm_database.models.message import Message  # noqa: F401
+from fm_database.models.system import SystemSetup  # noqa: F401
+from fm_database.models.user import User  # noqa: F401
 from fm_database.settings import get_config
 
 
@@ -34,13 +31,15 @@ def delete_all_data(confirm):
     """Delete all data from the database."""
 
     if not confirm:
-        click.echo("Action was not confirmed. No change made.")
+        click.echo(
+            "Action was not confirmed (command option '--confirm'). No change made."
+        )
     else:
         click.echo("deleting all data from the database.")
 
         base = get_base()
         session = get_session()
-        for table in reversed(base.meta.sorted_tables):
+        for table in reversed(base.metadata.sorted_tables):
             session.execute(table.delete())
         session.commit()
 
@@ -70,25 +69,3 @@ def create_tables():
     click.echo("stamping alembic head")
     al_command.stamp(alembic_cnf, "head")
     click.echo("done")
-
-
-@create.command()
-def initialize_database():
-    """initialize database for first time. Create a new user named admin with password admin."""
-
-    click.echo("creating user")
-    user = User(
-        username="admin",
-        email="admin@mail.com",
-        password="admin",
-        active=True,
-        is_admin=True,
-    )
-    session = get_session()
-    session.add(user)
-    click.echo("created user admin")
-
-    click.echo("inserting SystemSetup record")
-    system_setup = SystemSetup()
-    session.add(system_setup)
-    session.commit()
