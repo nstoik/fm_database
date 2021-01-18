@@ -40,14 +40,14 @@ def set_testing_env(monkeysession):
     monkeysession.setenv("FM_DATABASE_CONFIG", "dev")
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def dbsession():
     """Returns an sqlalchemy session."""
 
     yield db_session
 
 
-@pytest.fixture
+@pytest.fixture()
 def tables(dbsession):
     """Create all tables for testing. Delete when done."""
     base = get_base()
