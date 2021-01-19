@@ -32,7 +32,7 @@ class TestConfig(Config):  # pylint: disable=too-few-public-methods
 
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/fm_monitor_test_db.sqlite"
 
 
 def get_config(override_default=None):

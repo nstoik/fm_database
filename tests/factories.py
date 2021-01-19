@@ -1,8 +1,10 @@
 """Factories to help in tests."""
-# pylint: disable=too-few-public-methods
-from factory import PostGenerationMethodCall, SelfAttribute, Sequence, SubFactory
+# pylint: disable=too-few-public-methods,no-self-argument,unused-argument
+from factory import PostGenerationMethodCall, Sequence, post_generation
 from factory.alchemy import SQLAlchemyModelFactory
+from sqlalchemy.orm import Session
 
+from fm_database.base import get_session
 from fm_database.models.device import (
     Device,
     Grainbin,
@@ -11,17 +13,28 @@ from fm_database.models.device import (
 )
 from fm_database.models.user import User
 
-from .conftest import db_session
+db_session = get_session()
 
 
 class BaseFactory(SQLAlchemyModelFactory):
     """Base factory."""
 
+    @classmethod
+    def create(cls, session, **kwargs):
+        """Override the create method of the SQLALchemyModelFactory class.
+
+        Adds the variable session so that the sqlalchemy_session can be
+        passed in and overwritten. The sqlalchemy_session is pasased in this
+        way so that the new object can be properly saved in the correct session.
+        """
+        cls._meta.sqlalchemy_session = session
+        return super().create(**kwargs)
+
     class Meta:
         """Factory configuration."""
 
         abstract = True
-        sqlalchemy_session = db_session
+        sqlalchemy_session = None
 
 
 class UserFactory(BaseFactory):
@@ -45,9 +58,6 @@ class DeviceFactory(BaseFactory):
     hardware_version = "v1"
     software_version = "v1"
 
-    # explicitly save the device to the database here so IDs are available to SubFactory instances.
-    _ = PostGenerationMethodCall("save", db_session)
-
     class Meta:
         """Factory configuration."""
 
@@ -57,44 +67,77 @@ class DeviceFactory(BaseFactory):
 class GrainbinFactory(BaseFactory):
     """Grainbin factory."""
 
-    device = SubFactory(DeviceFactory)
-    device_id = SelfAttribute("device.id")
+    device_id = "set in custom_grainbin_save"
     bus_number = Sequence(int)
 
-    # explicitly save the device to the database here so IDs are available to SubFactory instances.
-    _ = PostGenerationMethodCall("save", db_session)
+    @post_generation
+    def custom_grainbin_save(obj, create, extracted, **kwargs):  # noqa: N805
+        """Custom function to add proper device.id to grainbin.
+
+        I tried doing this with SubFactory, but I could not get it
+        to work with also passing in a custom session object ;).
+        """
+        if not create:
+            return
+        session = Session.object_session(obj)
+        device = DeviceFactory.create(session)
+        device.save(session)
+        obj.device_id = device.id
+        return
 
     class Meta:
         """Factory Configuration."""
 
         model = Grainbin
-        exclude = ("device",)
 
 
 class TemperatureCableFactory(BaseFactory):
     """TemperatureCable factory."""
 
-    grainbin = SubFactory(GrainbinFactory)
-    grainbin_id = SelfAttribute("grainbin.id")
+    grainbin_id = "set in custom_cable_save"
 
-    # explicitly save the device to the database here so IDs are available to SubFactory instances.
-    _ = PostGenerationMethodCall("save", db_session)
+    @post_generation
+    def custom_cable_save(obj, create, extracted, **kwargs):  # noqa: N805
+        """Custom function to add proper grainbin.id to temperaturecable.
+
+        I tried doing this with SubFactory, but I could not get it
+        to work with also passing in a custom session object ;).
+        """
+        if not create:
+            return
+        session = Session.object_session(obj)
+        grainbin = GrainbinFactory.create(session)
+        grainbin.save(session)
+        obj.grainbin_id = grainbin.id
+        return
 
     class Meta:
         """Factory configurations."""
 
         model = TemperatureCable
-        exclude = ("grainbin",)
 
 
 class TemperatureSensorFactory(BaseFactory):
     """TemperatureSensor factory."""
 
-    temperature_cable = SubFactory(TemperatureCableFactory)
-    cable_id = SelfAttribute("temperature_cable.id")
+    cable_id = "set in custom_sensor_save"
+
+    @post_generation
+    def custom_sensor_save(obj, create, extracted, **kwargs):  # noqa: N805
+        """Custom function to add proper cable.id to TemperatureSensor.
+
+        I tried doing this with SubFactory, but I could not get it
+        to work with also passing in a custom session object ;).
+        """
+        if not create:
+            return
+        session = Session.object_session(obj)
+        temperature_cable = TemperatureCableFactory.create(session)
+        temperature_cable.save(session)
+        obj.cable_id = temperature_cable.id
+        return
 
     class Meta:
         """Factory configurations."""
 
         model = TemperatureSensor
-        exclude = "temperature_cable"

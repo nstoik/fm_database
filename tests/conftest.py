@@ -3,16 +3,8 @@
 # pylint: disable=redefined-outer-name,invalid-name
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
 
-from fm_database.base import get_base
-from fm_database.settings import get_config
-
-config = get_config(override_default="test")
-engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
-session = sessionmaker(bind=engine)
-db_session = scoped_session(session)
+from fm_database.base import create_all_tables, drop_all_tables, get_session
 
 
 @pytest.fixture(scope="session")
@@ -43,16 +35,12 @@ def set_testing_env(monkeysession):
 @pytest.fixture(scope="session")
 def dbsession():
     """Returns an sqlalchemy session."""
-
-    yield db_session
+    yield get_session()
 
 
 @pytest.fixture()
-def tables(dbsession):
+def tables():
     """Create all tables for testing. Delete when done."""
-    base = get_base()
-    base.query = dbsession.query_property()
-    base.metadata.create_all(bind=engine)
+    create_all_tables()
     yield
-    dbsession.close()
-    base.metadata.drop_all(bind=engine)
+    drop_all_tables()

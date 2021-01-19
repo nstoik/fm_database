@@ -32,7 +32,7 @@ class TestMessage:
         message.save(dbsession)
 
         retrieved = Message.get_by_id(message.id)
-        assert retrieved == message
+        assert retrieved.id == message.id
 
     @staticmethod
     def test_message_set_datetime_default(dbsession):

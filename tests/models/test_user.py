@@ -19,7 +19,7 @@ class TestUser:
         user.save(dbsession)
 
         retrieved = User.get_by_id(user.id)
-        assert retrieved == user
+        assert retrieved.id == user.id
 
     @staticmethod
     def test_created_at_defaults_to_datetime(dbsession):
@@ -39,7 +39,7 @@ class TestUser:
     @staticmethod
     def test_factory(dbsession):
         """Test user factory."""
-        user = UserFactory(password="myprecious")
+        user = UserFactory.create(dbsession, password="myprecious")
         dbsession.commit()
         assert bool(user.username)
         assert bool(user.email)
@@ -58,9 +58,9 @@ class TestUser:
         assert user.check_password("barfoobaz") is False
 
     @staticmethod
-    def test_full_name():
+    def test_full_name(dbsession):
         """User full name."""
-        user = UserFactory(first_name="Foo", last_name="Bar")
+        user = UserFactory.create(dbsession, first_name="Foo", last_name="Bar")
         assert user.full_name == "Foo Bar"
 
     @staticmethod
@@ -68,7 +68,7 @@ class TestUser:
         """Add a role to a user."""
         role = Role(name="admin")
         role.save(dbsession)
-        user = UserFactory()
+        user = UserFactory.create(dbsession)
         user.roles.append(role)
         user.save(dbsession)
         assert role in user.roles
@@ -80,11 +80,11 @@ class TestUser:
         role1.save(dbsession)
         role2 = Role(name="test")
         role2.save(dbsession)
-        user1 = UserFactory()
+        user1 = UserFactory.create(dbsession)
         user1.roles.append(role1)
         user1.roles.append(role2)
         user1.save(dbsession)
-        user2 = UserFactory()
+        user2 = UserFactory.create(dbsession)
         user2.roles.append(role1)
         user2.save(dbsession)
         assert role1 in user1.roles

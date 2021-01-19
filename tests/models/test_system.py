@@ -26,7 +26,7 @@ class TestSystemSetup:
         system_setup.save(dbsession)
 
         retrieved = SystemSetup.get_by_id(system_setup.id)
-        assert retrieved == system_setup
+        assert retrieved.id == system_setup.id
 
 
 @pytest.mark.usefixtures("tables")
@@ -53,7 +53,7 @@ class TestInterface:
         interface.save(dbsession)
 
         retrieved = Interface.get_by_id(interface.id)
-        assert retrieved == interface
+        assert retrieved.id == interface.id
 
 
 @pytest.mark.usefixtures("tables")
@@ -93,7 +93,7 @@ class TestWifi:
 
         retrieved = Wifi.get_by_id(wifi.id)
 
-        assert retrieved == wifi
+        assert retrieved.id == wifi.id
 
 
 @pytest.mark.usefixtures("tables")
@@ -117,7 +117,7 @@ class TestHardware:
         hardware.save(dbsession)
 
         retrieved = Hardware.get_by_id(hardware.id)
-        assert retrieved == hardware
+        assert retrieved.id == hardware.id
 
 
 @pytest.mark.usefixtures("tables")
@@ -140,4 +140,4 @@ class TestSoftware:
         software.save(dbsession)
 
         retrieved = Software.get_by_id(software.id)
-        assert retrieved == software
+        assert retrieved.id == software.id
