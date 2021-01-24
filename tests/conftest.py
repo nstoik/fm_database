@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Defines fixtures available to all tests."""
-# pylint: disable=redefined-outer-name,invalid-name
+# pylint: disable=redefined-outer-name
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
@@ -39,8 +39,9 @@ def dbsession():
 
 
 @pytest.fixture()
-def tables():
+def tables(dbsession):
     """Create all tables for testing. Delete when done."""
     create_all_tables()
     yield
+    dbsession.close()
     drop_all_tables()
