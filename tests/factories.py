@@ -4,7 +4,6 @@ from factory import PostGenerationMethodCall, Sequence, post_generation
 from factory.alchemy import SQLAlchemyModelFactory
 from sqlalchemy.orm import Session
 
-from fm_database.base import get_session
 from fm_database.models.device import (
     Device,
     Grainbin,
@@ -12,8 +11,6 @@ from fm_database.models.device import (
     TemperatureSensor,
 )
 from fm_database.models.user import User
-
-db_session = get_session()
 
 
 class BaseFactory(SQLAlchemyModelFactory):
@@ -24,7 +21,7 @@ class BaseFactory(SQLAlchemyModelFactory):
         """Override the create method of the SQLALchemyModelFactory class.
 
         Adds the variable session so that the sqlalchemy_session can be
-        passed in and overwritten. The sqlalchemy_session is pasased in this
+        passed in and overwritten. The sqlalchemy_session is passed in this
         way so that the new object can be properly saved in the correct session.
         """
         cls._meta.sqlalchemy_session = session
