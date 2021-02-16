@@ -2,7 +2,6 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/master/containers/python-3
 {
 	"name": "FM DATABASE",
-	"context": "..",
 
 	// The order of the files is important since later files override previous ones
 	"dockerComposeFile": [
@@ -15,13 +14,10 @@
 	"workspaceFolder": "/workspaces/fm_database",
 	"shutdownAction": "stopCompose",
 
-
-	// Uncomment the next line to use a non-root user. See https://aka.ms/vscode-remote/containers/non-root-user.
-	"runArgs": [ "-u", "fm" ],
-
 	"extensions": [
 		"ms-python.python",
 		"eamodio.gitlens",
+		"ms-python.vscode-pylance",
 	],
 	"settings": {
 		"python.linting.enabled": true,
