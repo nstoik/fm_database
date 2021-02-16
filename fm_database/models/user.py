@@ -82,6 +82,15 @@ class User(SurrogatePK):
         """Return if the user is anonymous."""
         return False
 
+    def get_id(self):
+        """Return the id of the user.
+
+        Required by Flask-Login.
+        https://flask-login.readthedocs.io/en/latest/#your-user-class
+        """
+
+        return str(self.id)
+
     def __repr__(self):
         """Represent instance as a unique string."""
         return "<User({username!r})>".format(username=self.username)
