@@ -43,8 +43,8 @@ class User(SurrogatePK):
     created_at = Column(DateTime, nullable=False, default=dt.datetime.utcnow)
     first_name = Column(String(30), nullable=True)
     last_name = Column(String(30), nullable=True)
-    active = Column(Boolean(), default=False)
-    is_admin = Column(Boolean(), default=False)
+    active = Column(Boolean(), nullable=False, default=True)
+    is_admin = Column(Boolean(), nullable=False, default=False)
 
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
@@ -65,7 +65,9 @@ class User(SurrogatePK):
     @property
     def full_name(self):
         """Full user name."""
-        return "{0} {1}".format(self.first_name, self.last_name)
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        return "First and Last name not set"
 
     @property
     def is_active(self):
