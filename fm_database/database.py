@@ -61,7 +61,7 @@ class SurrogatePK(Model):  # pylint: disable=too-few-public-methods
             ),
         ):
             if session:
-                return session.query.get(int(record_id))
+                return session.query(cls).get(int(record_id))
             return cls.query.get(int(record_id))
         return None
 
