@@ -2,7 +2,7 @@
 # pylint: disable=too-few-public-methods,no-self-argument,unused-argument
 from factory import PostGenerationMethodCall, Sequence, post_generation
 from factory.alchemy import SQLAlchemyModelFactory
-from sqlalchemy.orm import Session
+from sqlalchemy.orm.session import object_session
 
 from fm_database.models.device import (
     Device,
@@ -76,7 +76,7 @@ class GrainbinFactory(BaseFactory):
         """
         if not create:
             return
-        session = Session.object_session(obj)
+        session = object_session(obj)
         device = DeviceFactory.create(session)
         device.save(session)
         obj.device_id = device.id
@@ -102,7 +102,7 @@ class TemperatureCableFactory(BaseFactory):
         """
         if not create:
             return
-        session = Session.object_session(obj)
+        session = object_session(obj)
         grainbin = GrainbinFactory.create(session)
         grainbin.save(session)
         obj.grainbin_id = grainbin.id
@@ -128,7 +128,7 @@ class TemperatureSensorFactory(BaseFactory):
         """
         if not create:
             return
-        session = Session.object_session(obj)
+        session = object_session(obj)
         temperature_cable = TemperatureCableFactory.create(session)
         temperature_cable.save(session)
         obj.cable_id = temperature_cable.id
