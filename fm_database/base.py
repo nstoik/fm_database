@@ -34,7 +34,6 @@ def session_scope():
     session = get_session()
     try:
         yield session
-        session.commit()
     except Exception as ex:  # noqa B902
         session.rollback()
         raise ex
