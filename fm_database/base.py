@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Database base configuration."""
+from contextlib import contextmanager
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -23,6 +25,21 @@ def get_session():
     db_session = scoped_session(session)
 
     return db_session
+
+
+@contextmanager
+def session_scope():
+    """Provide a transactional scope for a session around a series of operations."""
+
+    session = get_session()
+    try:
+        yield session
+        session.commit()
+    except Exception as ex:  # noqa B902
+        session.rollback()
+        raise ex
+    finally:
+        session.close()
 
 
 def get_base(with_query=False):
