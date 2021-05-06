@@ -30,7 +30,7 @@ def get_session():
 @contextmanager
 def session_scope():
     """Provide a transactional scope for a session around a series of operations.
-    
+
     Example usage:
     'with session_scope() as session:
         do session related work.
